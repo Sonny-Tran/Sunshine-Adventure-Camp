@@ -132,12 +132,12 @@ entry_date = Button(entry_frame, textvariable=date, width=int(17 * RATIO), comma
 entry_date.grid(row=2, column=1, sticky="w", padx=(int(15 * RATIO)))
 
 
-
-# Row Number
-Label(entry_frame, text="Row Number", font=text_font, bg="tan").grid(row=2, column=2, padx=(int(30 * RATIO), 0), pady=(int(15 * RATIO)), sticky="e")
-row_number = Entry(entry_frame, width=18, font=text_font)
-row_number.grid(row=2, column=3, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)), sticky="w")
-
+# Staying/Moving Dropdown
+Label(entry_frame, text="Staying/Moving", font=text_font, bg="tan").grid(row=2, column=2, padx=(int(30 * RATIO), 0), pady=(int(15 * RATIO)), sticky="e")
+staying_or_moving = StringVar()
+staying_moving_entry = OptionMenu(entry_frame, staying_or_moving, "Moving", "Staying")
+staying_moving_entry.configure(width=int(14 * RATIO))
+staying_moving_entry.grid(row=2, column=3,padx=(int(15 * RATIO)), pady=(int(15 * RATIO)), sticky="w")
 
 
 # Day and Night Dropdown
@@ -149,24 +149,18 @@ day_night.grid(row=3, column=1,padx=(int(15 * RATIO)), pady=(int(10 * RATIO)), s
 
 
 
-# Staying/Moving Dropdown
-Label(entry_frame, text="Staying/Moving", font=text_font, bg="tan").grid(row=3, column=2, padx=(int(30 * RATIO), 0), pady=(int(15 * RATIO)), sticky="e")
-staying_moving = StringVar()
-staying_moving_entry = OptionMenu(entry_frame, staying_moving, "Moving", "Staying")
-staying_moving_entry.configure(width=int(14 * RATIO))
-staying_moving_entry.grid(row=3, column=3,padx=(int(15 * RATIO)), pady=(int(15 * RATIO)), sticky="w")
-
-
-
 def submit():
     while True:
         name = leader_name.get()
         location = location_entry.get()
         member = members.get()
         weather = weathers.get()
+        staying_moving = staying_or_moving.get()
+        day_night = day_night_time.get()
 
 
-        if name == "" or type == None:
+
+        if name == "":
             messagebox.showerror(title="Name Error", message="Please Enter a Name")
             break
         if location == "":
@@ -176,14 +170,23 @@ def submit():
         if dateEntry == "Date":
             messagebox.showerror(title="Date Error", message="Please Select a Date")
             break
+        
+
+        leader_name.delete(0, END)
+        location_entry.delete(0, END)
+        members.set(5)
+        weathers.set("Sunny")
+        staying_or_moving.set("")
+        day_night_time.set("")
       
-        new_window()
         newEntry = []
         newEntry.append(name)
         newEntry.append(location)
         newEntry.append(member)
         newEntry.append(weather)
+        newEntry.append(staying_moving)
         newEntry.append(dateEntry)
+        newEntry.append(day_night)
 
         print(newEntry)
         
