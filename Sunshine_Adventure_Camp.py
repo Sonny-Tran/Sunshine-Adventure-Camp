@@ -43,30 +43,47 @@ title = Label(frame1, text="Sunshine Adventure Camp", bg="green", font=title_fon
 # Widgets being placed inside 'entry_frame'
 
 #Leader's Label and Entry Box
-Label(entry_frame, text="Leader's Name", font=text_font, bg="tan").grid(row=0, column=0, sticky='w', pady=(int(15 * RATIO)))
-leader_name = Entry(entry_frame, width=20, font=text_font).grid(row=0, column=1, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)))
+Label(entry_frame, text="Leader's Name", font=text_font, bg="tan").grid(row=0, column=0, sticky='e', pady=(int(20 * RATIO)))
+leader_name = Entry(entry_frame, width=int(18 * RATIO), font=text_font).grid(row=0, column=1, padx=(int(15 * RATIO), 0), pady=(int(20 * RATIO)), sticky='w')
 
 
 #No. Group Members Label and Dropdown Menu
-Label(entry_frame, text="No. Group Members", font=text_font, bg="tan").grid(row=0, column=2, padx=(int(40 * RATIO), 0), pady=(int(15 * RATIO)))
+Label(entry_frame, text="No.Group Members", font=text_font, bg="tan").grid(row=0, column=2, padx=(int(30 * RATIO), 0), pady=(int(20 * RATIO)))
 members = IntVar()
 members.set(5)
 group_member_entry = OptionMenu(entry_frame, members, "5", "6", "7", "8", "9", "10", )
-group_member_entry.configure(width=12)
-group_member_entry.grid(row=0, column=3, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)), sticky="w")
+group_member_entry.configure(width=int(14 * RATIO))
+group_member_entry.grid(row=0, column=3, padx=(int(15 * RATIO), 0), pady=(int(20 * RATIO)), sticky="w")
 
 
 #Weather Label and Dropdown Menu
-Label(entry_frame, text="Weather Condition", font=text_font, bg="tan").grid(row=1, column=0, pady=(int(15 * RATIO)))
+Label(entry_frame, text="Weather Condition", font=text_font, bg="tan").grid(row=1, column=0, pady=(int(20 * RATIO)))
 weather = StringVar()
 weather_conditions = OptionMenu(entry_frame, weather, "Sunny", "Cloudy", "Raining", "Windy", "Storming", "Snowing")
-weather_conditions.configure(width=12)
-weather_conditions.grid(row=1, column=1, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)))
+weather_conditions.configure(width=int(14 * RATIO))
+weather_conditions.grid(row=1, column=1, padx=(int(15 * RATIO), 0), pady=(int(20 * RATIO)), sticky="w")
 
 
 #Location Label and Entry Point
-Label(entry_frame, text="Location", font=text_font, bg="tan").grid(row=1, column=2, padx=(int(40 * RATIO), 0), pady=(int(15 * RATIO)), sticky="w")
-location = Entry(entry_frame, width=20, font=text_font, bg="tan").grid(row=1, column=3,padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)))
+Label(entry_frame, text="Location", font=text_font, bg="tan").grid(row=1, column=2, padx=(int(30 * RATIO), 0), pady=(int(20 * RATIO)), sticky="e")
+location = Entry(entry_frame, width=int(18 * RATIO), font=text_font).grid(row=1, column=3, padx=(int(15 * RATIO)), pady=(int(20 * RATIO)), sticky="w")
+
+
+#Day and Night Dropdown
+
+Label(entry_frame, text="Day/Night", font=text_font, bg="tan").grid(row=2, column=0, pady=(int(20 * RATIO)), sticky="e")
+day_night_time = StringVar()
+day_night = OptionMenu(entry_frame, day_night_time, "Day", "Night")
+day_night.configure(width=int(14 * RATIO))
+day_night.grid(row=2, column=1,padx=(int(15 * RATIO)), pady=(int(20 * RATIO)), sticky="w")
+
+
+#Staying/Moving Dropdown
+Label(entry_frame, text="Day/Night", font=text_font, bg="tan").grid(row=2, column=2, padx=(int(30 * RATIO), 0), pady=(int(20 * RATIO)), sticky="e")
+staying_moving = StringVar()
+staying_moving = OptionMenu(entry_frame, staying_moving, "Moving", "Staying")
+staying_moving.configure(width=int(14 * RATIO))
+staying_moving.grid(row=2, column=3,padx=(int(15 * RATIO)), pady=(int(20 * RATIO)), sticky="w")
 
 
 # Widgets being placed inside 'functional_buttons_frame
