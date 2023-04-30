@@ -1,5 +1,5 @@
 from tkinter import *
-from tkcalendar import Calendar  # Need "pip install tkcalendar"
+from tkcalendar import *  # Need "pip install tkcalendar"
 from tkinter import messagebox
 import tkinter.font as tkFont
 root = Tk()
@@ -48,6 +48,7 @@ def pickDate():
         dateEntry = cal.selection_get()
         date.set(dateEntry)
         calendarWindow.destroy()
+        print(dateEntry)
 
     calendarWindow = Toplevel()
     calendarWindow.geometry(f'280x200+{margin_width}+{margin_height}')
@@ -110,9 +111,9 @@ group_member_entry.grid(row=0, column=3, padx=(int(15 * RATIO), 0), pady=(int(15
 
 # Weather Label and Dropdown Menu
 Label(entry_frame, text="Weather Condition", font=text_font, bg="tan").grid(row=1, column=0, pady=(int(15 * RATIO)))
-weather = StringVar()
-weather.set("Sunny")
-weather_conditions = OptionMenu(entry_frame, weather, "Sunny", "Cloudy", "Raining", "Windy", "Storming", "Snowing")
+weathers = StringVar()
+weathers.set("Sunny")
+weather_conditions = OptionMenu(entry_frame, weathers, "Sunny", "Cloudy", "Raining", "Windy", "Storming", "Snowing")
 weather_conditions.configure(width=int(14 * RATIO))
 weather_conditions.grid(row=1, column=1, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)), sticky="w")
 
@@ -161,9 +162,9 @@ def submit():
     while True:
         name = leader_name.get()
         location = location_entry.get()
+        member = members.get()
+        weather = weathers.get()
 
-        print(name)
-        print(location)
 
         if name == "" or type == None:
             messagebox.showerror(title="Name Error", message="Please Enter a Name")
@@ -177,18 +178,16 @@ def submit():
             break
       
         new_window()
-        List = []
-        List.append(leader_name)
-        List.append(location)
-        List.append(members)
-        List.append(weather)
-        List.append(dateEntry)
-        List.append(day_night)
-        List.append(staying_moving_entry)
-        print(List)
+        newEntry = []
+        newEntry.append(name)
+        newEntry.append(location)
+        newEntry.append(member)
+        newEntry.append(weather)
+        newEntry.append(dateEntry)
+
+        print(newEntry)
         
         break
-
 
 
 
@@ -202,10 +201,5 @@ entires_window = Button(functional_buttons_frame, text="View Entires", bg="white
 
 root.geometry(f'{window_width}x{window_height}+{margin_width}+{margin_height}') # Geometry of window in order : Win_X, Win_Y, PadX, PadY
 root.resizable(False, False) # Can't resize window
-
-x, y = entry_frame.grid_size()
-
-print(x)
-print(y)
 
 mainloop()
