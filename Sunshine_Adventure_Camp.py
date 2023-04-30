@@ -3,12 +3,23 @@ from tkcalendar import Calendar  # Need "pip install tkcalendar"
 from tkinter import messagebox
 import tkinter.font as tkFont
 root = Tk()
+dateEntry = "Date"
+
+
+
+screen_width, screen_height = root.winfo_screenwidth(), root.winfo_screenheight() #Grabs device resolution
+
+# Window Geometry Calculations
+window_height = int(screen_height / 3) # Deciding window height based on screen size, so no matter what display, window will always take up 50%
+window_width = int(screen_width / 3) # Deciding window width based on screen size, so no matter what display, window will always take up 50%%
+
+margin_width = int(screen_width / 2 - window_width / 2) # Adding padding so window will always appear in the middle
+margin_height = int(screen_height / 2 - window_height / 2) # Screen_height - Window_Height = Empty space on the side / 2 since we want the window to be in the middle
 
 
 def append_entries():
         print("Appended")
-
-
+    
 
 def new_window():
     try:
@@ -30,23 +41,22 @@ def new_window():
 
 
 
-def calendar():
-    def date_set():
+
+def pickDate():
+    def dateEntrySet():
         global dateEntry
         dateEntry = cal.selection_get()
-        date = str(dateEntry)
+        date.set(dateEntry)
         calendarWindow.destroy()
-        Button(entry_frame, text=dateEntry, command=calendar, width=18).grid(row=2, column=1)
-    
+
     calendarWindow = Toplevel()
     calendarWindow.geometry(f'280x200+{margin_width}+{margin_height}')
 
     cal = Calendar(calendarWindow, selectmode="day", year=2023, month=4, day=30)
     cal.pack()
-    Button(calendarWindow, text="Choose Date", command=date_set, width=18).pack()
+    Button(calendarWindow, text="Choose Date", command=dateEntrySet, width=18).pack()
 
 
-screen_width, screen_height = root.winfo_screenwidth(), root.winfo_screenheight() #Grabs device resolution
 
 RATIO = 1
 RATIO *= screen_width / 1920 # Since I'm programming on a 1920 x 1080 resolution screen, I use Ratio so that if some one else views this program with a 4k screen (3840 x 2160),
@@ -85,7 +95,8 @@ title = Label(frame1, text="Sunshine Adventure Camp", bg="green", font=title_fon
 
 #Leader's Label and Entry Box
 Label(entry_frame, text="Leader's Name", font=text_font, bg="tan").grid(row=0, column=0, sticky='e', pady=(int(15 * RATIO)))
-leader_name = Entry(entry_frame, width=int(18 * RATIO), font=text_font).grid(row=0, column=1, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)), sticky='w')
+leader_name = Entry(entry_frame, width=int(18 * RATIO), font=text_font)
+leader_name.grid(row=0, column=1, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)), sticky='w')
 
 
 # No. Group Members Label and Dropdown Menu
@@ -100,6 +111,7 @@ group_member_entry.grid(row=0, column=3, padx=(int(15 * RATIO), 0), pady=(int(15
 # Weather Label and Dropdown Menu
 Label(entry_frame, text="Weather Condition", font=text_font, bg="tan").grid(row=1, column=0, pady=(int(15 * RATIO)))
 weather = StringVar()
+weather.set("Sunny")
 weather_conditions = OptionMenu(entry_frame, weather, "Sunny", "Cloudy", "Raining", "Windy", "Storming", "Snowing")
 weather_conditions.configure(width=int(14 * RATIO))
 weather_conditions.grid(row=1, column=1, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)), sticky="w")
@@ -107,20 +119,23 @@ weather_conditions.grid(row=1, column=1, padx=(int(15 * RATIO), 0), pady=(int(15
 
 # Location Label and Entry Point
 Label(entry_frame, text="Location", font=text_font, bg="tan").grid(row=1, column=2, padx=(int(30 * RATIO), 0), pady=(int(15 * RATIO)), sticky="e")
-location = Entry(entry_frame, width=int(18 * RATIO), font=text_font).grid(row=1, column=3, pady=(int(15 * RATIO)),padx=(int(15 * RATIO), 0), sticky="w")
+location_entry = Entry(entry_frame, width=int(18 * RATIO), font=text_font)
+location_entry.grid(row=1, column=3, pady=(int(15 * RATIO)),padx=(int(15 * RATIO), 0), sticky="w")
 
 
 # Calender Selector and Label
 date_label = Label(entry_frame, text="Date", font=text_font, bg="tan").grid(row=2, column=0, sticky="e")
 date = StringVar()
-date = "Date"
-Button(entry_frame, text=date, width=int(17 * RATIO), command=calendar).grid(row=2, column=1, sticky="w", padx=(int(15 * RATIO)))
+date.set("Pick A Date")
+entry_date = Button(entry_frame, textvariable=date, width=int(17 * RATIO), command=pickDate)
+entry_date.grid(row=2, column=1, sticky="w", padx=(int(15 * RATIO)))
 
 
 
 # Row Number
 Label(entry_frame, text="Row Number", font=text_font, bg="tan").grid(row=2, column=2, padx=(int(30 * RATIO), 0), pady=(int(15 * RATIO)), sticky="e")
-row_number = Entry(entry_frame, width=18, font=text_font).grid(row=2, column=3, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)), sticky="w")
+row_number = Entry(entry_frame, width=18, font=text_font)
+row_number.grid(row=2, column=3, padx=(int(15 * RATIO), 0), pady=(int(15 * RATIO)), sticky="w")
 
 
 
@@ -136,25 +151,54 @@ day_night.grid(row=3, column=1,padx=(int(15 * RATIO)), pady=(int(10 * RATIO)), s
 # Staying/Moving Dropdown
 Label(entry_frame, text="Staying/Moving", font=text_font, bg="tan").grid(row=3, column=2, padx=(int(30 * RATIO), 0), pady=(int(15 * RATIO)), sticky="e")
 staying_moving = StringVar()
-staying_moving = OptionMenu(entry_frame, staying_moving, "Moving", "Staying")
-staying_moving.configure(width=int(14 * RATIO))
-staying_moving.grid(row=3, column=3,padx=(int(15 * RATIO)), pady=(int(15 * RATIO)), sticky="w")
+staying_moving_entry = OptionMenu(entry_frame, staying_moving, "Moving", "Staying")
+staying_moving_entry.configure(width=int(14 * RATIO))
+staying_moving_entry.grid(row=3, column=3,padx=(int(15 * RATIO)), pady=(int(15 * RATIO)), sticky="w")
+
+
+
+def submit():
+    while True:
+        name = leader_name.get()
+        location = location_entry.get()
+
+        print(name)
+        print(location)
+
+        if name == "" or type == None:
+            messagebox.showerror(title="Name Error", message="Please Enter a Name")
+            break
+        if location == "":
+            messagebox.showerror(title="Location Error", message="Please Enter a Location")
+            break
+
+        if dateEntry == "Date":
+            messagebox.showerror(title="Date Error", message="Please Select a Date")
+            break
+      
+        new_window()
+        List = []
+        List.append(leader_name)
+        List.append(location)
+        List.append(members)
+        List.append(weather)
+        List.append(dateEntry)
+        List.append(day_night)
+        List.append(staying_moving_entry)
+        print(List)
+        
+        break
+
 
 
 
 # Widgets being placed inside 'functional_buttons_frame'
 quit_button = Button(functional_buttons_frame, text="Quit", bg="white", command=root.quit, width=int(10 * RATIO), height=1, font=buttons_font).grid(row=0, column=5)
-submit = Button(functional_buttons_frame, text="Submit", bg="white", command=new_window, width=int(10 * RATIO), height=1, font=buttons_font).grid(row=0, column=3)
+submit_button = Button(functional_buttons_frame, text="Submit", bg="white", command=submit, width=int(10 * RATIO), height=1, font=buttons_font).grid(row=0, column=3)
 entires_window = Button(functional_buttons_frame, text="View Entires", bg="white", command=new_window, width=int(10 * RATIO), height=1, font=buttons_font).grid(row=0, column=1)
 
 
 
-# Window Geometry Calculations
-window_height = int(screen_height / 3) # Deciding window height based on screen size, so no matter what display, window will always take up 50%
-window_width = int(screen_width / 3) # Deciding window width based on screen size, so no matter what display, window will always take up 50%%
-
-margin_width = int(screen_width / 2 - window_width / 2) # Adding padding so window will always appear in the middle
-margin_height = int(screen_height / 2 - window_height / 2) # Screen_height - Window_Height = Empty space on the side / 2 since we want the window to be in the middle
 
 root.geometry(f'{window_width}x{window_height}+{margin_width}+{margin_height}') # Geometry of window in order : Win_X, Win_Y, PadX, PadY
 root.resizable(False, False) # Can't resize window
