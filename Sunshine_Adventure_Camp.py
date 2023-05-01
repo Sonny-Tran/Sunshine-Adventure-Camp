@@ -5,8 +5,6 @@ import tkinter.font as tkFont
 root = Tk()
 dateEntry = "Date"
 
-
-
 screen_width, screen_height = root.winfo_screenwidth(), root.winfo_screenheight() #Grabs device resolution
 
 # Window Geometry Calculations
@@ -16,35 +14,59 @@ window_width = int(screen_width / 3) # Deciding window width based on screen siz
 margin_width = int(screen_width / 2 - window_width / 2) # Adding padding so window will always appear in the middle
 margin_height = int(screen_height / 2 - window_height / 2) # Screen_height - Window_Height = Empty space on the side / 2 since we want the window to be in the middle
 
-print(window_height, window_width)
-
 def append_entries():
         print("Appended")
     
+def hide():
+    root2.withdraw()
 
 def new_window():
     try:
         global root2
+        
         if root2.winfo_exists():   # python will raise an exception there if variable doesn't exist
             root2.deiconify()
             pass
         else:
             root2 = Toplevel()
+            # Root2 Iconify Button / Bottom Row
+            root2.rowconfigure(0, weight=1)
+            root2.columnconfigure(0, weight=1)
 
-            root2.geometry(f'{window_width}x{window_height}+{margin_width}+{margin_height}') #Geometry of window in order : Win_X, Win_Y, PadX, PadY
-            root2.resizable(False, False) #Can't resize window
-        
-    except NameError:               # exception? we are now here.  
+            entries_frame = Frame(root2, bg="tan", pady=15, padx=15)
+            bottom_frame = Frame(root2, bg="purple", pady=15, padx=15)
+
+            entries_frame.grid(row=0, column=0, sticky="news")
+            bottom_frame.grid(row=1, column=0, sticky="ew",)
+
+            bottom_frame.columnconfigure((0, 3), weight=1)
+            hide_button = Button(bottom_frame, bg="white", width=18, command=hide)
+            hide_button.grid(row=0, column=4)
+
+    except:  # exception 
         root2 = Toplevel()
+        # Root2 Iconify Button / Bottom Row
+        root2.rowconfigure(0, weight=1)
+        root2.columnconfigure(0, weight=1)
 
-        root2.geometry(f'{window_width}x{window_height}+{margin_width}+{margin_height}') #Geometry of window in order : Win_X, Win_Y, PadX, PadY
-        root2.resizable(False, False) #Can't resize window
+        entries_frame = Frame(root2, bg="tan", pady=15, padx=15)
+        bottom_frame = Frame(root2, bg="purple", pady=15, padx=15)
+
+        entries_frame.grid(row=0, column=0, sticky="news")
+        bottom_frame.grid(row=1, column=0, sticky="ew",)
+
+        bottom_frame.columnconfigure((0, 3, 5), weight=1)
+        hide_button = Button(bottom_frame, bg="white", width=18, command=hide)
+        hide_button.grid(row=0, column=4)
+
+    root2.geometry(f'{window_width}x{window_height}+{margin_width}+{margin_height}') #Geometry of window in order : Win_X, Win_Y, PadX, PadY
+    root2.resizable(False, False) #Can't resize window
     root2.title("Sunshine Adventure Camp Entries")
+    
 
 
 
-
-def pickDate():
+def pickDate(): # Command for calender to show up
     def dateEntrySet():
         global dateEntry
         dateEntry = cal.selection_get()
@@ -52,10 +74,11 @@ def pickDate():
         calendarWindow.destroy()
         print(dateEntry)
 
-    calendarWindow = Toplevel()
-    calendarWindow.geometry(f'280x200+{margin_width}+{margin_height}')
+    calendarWindow = Toplevel() #Creates a separate window
+    calendarWindow.geometry(f'280x200+{margin_width}+{margin_height}') # window geometry
+    
 
-    cal = Calendar(calendarWindow, selectmode="day", year=2023, month=4, day=30)
+    cal = Calendar(calendarWindow, selectmode="day", year=2023, month=4, day=30) # Calendar
     cal.pack()
     Button(calendarWindow, text="Choose Date", command=dateEntrySet, width=18).pack()
 
@@ -149,9 +172,6 @@ day_night = OptionMenu(entry_frame, day_night_time, "Day", "Night")
 day_night.configure(width=int(14 * RATIO))
 day_night.grid(row=3, column=1,padx=(int(15 * RATIO)), pady=(int(10 * RATIO)), sticky="w")
 
-# Root2 Iconify Button / Bottom Row
-bottom_frame = Frame(root2, bg="purple", padx=15)
-
 
 def submit():
     while True:
@@ -163,16 +183,24 @@ def submit():
         day_night = day_night_time.get()
 
 
-
         if name == "":
             messagebox.showerror(title="Name Error", message="Please Enter a Name")
             break
+
         if location == "":
             messagebox.showerror(title="Location Error", message="Please Enter a Location")
             break
 
         if dateEntry == "Date":
             messagebox.showerror(title="Date Error", message="Please Select a Date")
+            break
+
+        if staying_moving == "":
+            messagebox.showerror(title="Staying/Moving Error", message="Please Select Staying or Moving")
+            break
+
+        if day_night == "":
+            messagebox.showerror(title="Time Error", message="Please Select Day or Night")
             break
         
         new_window()
@@ -196,7 +224,7 @@ def submit():
         allEntries.append(newEntry)
 
         print(newEntry)
-        row = 0
+        row = 1
         for entry in allEntries:
             Label(root2, text=entry[0], width=12).grid(column=0, row=row, sticky=W)
             Label(root2, text=entry[1], width=12).grid(column=1, row=row, sticky=W)
@@ -208,7 +236,6 @@ def submit():
             row += 1
         
         break
-
 
 
 # Widgets being placed inside 'functional_buttons_frame'
