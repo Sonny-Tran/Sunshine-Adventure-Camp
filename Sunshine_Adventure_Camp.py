@@ -16,6 +16,7 @@ window_width = int(screen_width / 3) # Deciding window width based on screen siz
 margin_width = int(screen_width / 2 - window_width / 2) # Adding padding so window will always appear in the middle
 margin_height = int(screen_height / 2 - window_height / 2) # Screen_height - Window_Height = Empty space on the side / 2 since we want the window to be in the middle
 
+print(window_height, window_width)
 
 def append_entries():
         print("Appended")
@@ -25,6 +26,7 @@ def new_window():
     try:
         global root2
         if root2.winfo_exists():   # python will raise an exception there if variable doesn't exist
+            root2.deiconify()
             pass
         else:
             root2 = Toplevel()
@@ -147,6 +149,8 @@ day_night = OptionMenu(entry_frame, day_night_time, "Day", "Night")
 day_night.configure(width=int(14 * RATIO))
 day_night.grid(row=3, column=1,padx=(int(15 * RATIO)), pady=(int(10 * RATIO)), sticky="w")
 
+# Root2 Iconify Button / Bottom Row
+bottom_frame = Frame(root2, bg="purple", padx=15)
 
 
 def submit():
@@ -171,24 +175,37 @@ def submit():
             messagebox.showerror(title="Date Error", message="Please Select a Date")
             break
         
-
+        new_window()
+        
         leader_name.delete(0, END)
         location_entry.delete(0, END)
         members.set(5)
         weathers.set("Sunny")
         staying_or_moving.set("")
         day_night_time.set("")
-      
-        newEntry = []
+        
+        allEntries = [["Leader's Name", "Location", "Member", "Weather", "Date", "Staying/Moving", "Day/Night"]]
+        newEntry = []   
         newEntry.append(name)
         newEntry.append(location)
         newEntry.append(member)
         newEntry.append(weather)
-        newEntry.append(staying_moving)
         newEntry.append(dateEntry)
+        newEntry.append(staying_moving)
         newEntry.append(day_night)
+        allEntries.append(newEntry)
 
         print(newEntry)
+        row = 0
+        for entry in allEntries:
+            Label(root2, text=entry[0], width=12).grid(column=0, row=row, sticky=W)
+            Label(root2, text=entry[1], width=12).grid(column=1, row=row, sticky=W)
+            Label(root2, text=entry[2], width=12).grid(column=2, row=row, sticky=W)
+            Label(root2, text=entry[3], width=12).grid(column=3, row=row, sticky=W)
+            Label(root2, text=entry[4], width=12).grid(column=4, row=row, sticky=W) 
+            Label(root2, text=entry[5], width=12).grid(column=5, row=row, sticky=W)
+            Label(root2, text=entry[6], width=12).grid(column=6, row=row, sticky=W)
+            row += 1
         
         break
 
@@ -198,7 +215,6 @@ def submit():
 quit_button = Button(functional_buttons_frame, text="Quit", bg="white", command=root.quit, width=int(10 * RATIO), height=1, font=buttons_font).grid(row=0, column=5)
 submit_button = Button(functional_buttons_frame, text="Submit", bg="white", command=submit, width=int(10 * RATIO), height=1, font=buttons_font).grid(row=0, column=3)
 entires_window = Button(functional_buttons_frame, text="View Entires", bg="white", command=new_window, width=int(10 * RATIO), height=1, font=buttons_font).grid(row=0, column=1)
-
 
 
 
