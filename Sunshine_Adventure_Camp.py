@@ -20,18 +20,30 @@ def append_entries():
 def hide():
     root2.withdraw()
 
+def delete_row():
+    row_number = row_num_entry.get()
+    Label(root2, text="      ").grid(column=0, row=row_number)
+    Label(root2, text="                ").grid(column=1, row=row_number)
+    Label(root2, text="                ").grid(column=2, row=row_number)
+    Label(root2, text="                ").grid(column=3, row=row_number)
+    Label(root2, text="                ").grid(column=4, row=row_number)
+    Label(root2, text="                               ").grid(column=5, row=row_number)
+    Label(root2, text="                ").grid(column=6, row=row_number)
+    Label(root2, text="                ").grid(column=7, row=row_number)
+
+
 def print_entries():
     global row_num
     row_num = 0
     for entry in allEntries:
-        Button(root2, text=row_num, width=10).grid(column=0, row=row_num, sticky=W)
-        Label(root2, text=entry[0], width=10).grid(column=0, row=row_num, sticky=W)
-        Label(root2, text=entry[1], width=10).grid(column=1, row=row_num, sticky=W)
-        Label(root2, text=entry[2], width=10).grid(column=2, row=row_num, sticky=W)
-        Label(root2, text=entry[3], width=10).grid(column=3, row=row_num, sticky=W)
-        Label(root2, text=entry[4], width=10).grid(column=4, row=row_num, sticky=W) 
-        Label(root2, text=entry[5], width=10).grid(column=5, row=row_num, sticky=W)
-        Label(root2, text=entry[6], width=10).grid(column=6, row=row_num, sticky=W)
+        Label(root2, text=row_num, width=5).grid(column=0, row=row_num, sticky=W, padx=(0, 5))
+        Label(root2, text=entry[0], width=12).grid(column=1, row=row_num, sticky=W)
+        Label(root2, text=entry[1], width=10).grid(column=2, row=row_num, sticky=W)
+        Label(root2, text=entry[2], width=10).grid(column=3, row=row_num, sticky=W)
+        Label(root2, text=entry[3], width=10).grid(column=4, row=row_num, sticky=W)
+        Label(root2, text=entry[4], width=10).grid(column=5, row=row_num, sticky=W) 
+        Label(root2, text=entry[5], width=12).grid(column=6, row=row_num, sticky=W)
+        Label(root2, text=entry[6], width=10).grid(column=7, row=row_num, sticky=W)
         row_num += 1
 
 def new_window():
@@ -43,50 +55,30 @@ def new_window():
             root2.deiconify()
             pass
         else:
-            root2 = Toplevel(padx=15)
+            root2 = Toplevel()
             # Root2 Iconify Button / Bottom Row
-            root2.rowconfigure(0, weight=1)
-            root2.columnconfigure(0, weight=1)
 
-            entries_frame = Frame(root2, bg="white", padx= 15, pady=15)
-            entries_frame.grid(row=0, column=0, sticky="news")
-
-            bottom_frame = Frame(root2, bg="grey", pady=15, padx=15)
-            bottom_frame.grid(row=1, column=0, sticky="ew",)
+            row_num_entry = Entry(root2, font=buttons_font, bg="white", width=int(2 * RATIO))
+            row_num_entry.grid(row=100, column=2, padx=5, pady=15)
+            del_button = Button(root2, font=buttons_font, text="Delete", bg="white", width=int(5 * RATIO), command=delete_row)
+            del_button.grid(row=100, column=3)
 
 
-
-            row_num_entry = Entry(bottom_frame, font=buttons_font, bg="white", width=int(2 * RATIO))
-            row_num_entry.grid(row=0, column=2, padx=5, pady=15)
-            del_button = Button(bottom_frame, font=buttons_font, text="Delete", bg="white", width=int(5 * RATIO))
-            del_button.grid(row=0, column=3)
-
-
-            hide_button = Button(bottom_frame, bg="white", text="Hide", font=buttons_font, width=int(10 * RATIO), command=hide)
-            hide_button.grid(row=0, column=5)
+            hide_button = Button(root2, bg="white", text="Hide", font=buttons_font, width=int(10 * RATIO), command=hide)
+            hide_button.grid(row=100, column=5)
 
     except:  # exception 
             root2 = Toplevel()
             # Root2 Iconify Button / Bottom Row
-            root2.rowconfigure(0, weight=1)
-            root2.columnconfigure(0, weight=1)
 
-            entries_frame = Frame(root2, bg="white", padx= 15, pady=15)
-            entries_frame.grid(row=0, column=0, sticky="news")
-
-            bottom_frame = Frame(root2, bg="grey", pady=15, padx=15)
-            bottom_frame.grid(row=1, column=0, sticky="ew",)
+            row_num_entry = Entry(root2, font=buttons_font, bg="white", width=int(2 * RATIO))
+            row_num_entry.grid(row=100, column=2, padx=5, pady=15)
+            del_button = Button(root2, font=buttons_font, text="Delete", bg="white", width=int(5 * RATIO), command=delete_row)
+            del_button.grid(row=100, column=3)
 
 
-
-            row_num_entry = Entry(bottom_frame, font=buttons_font, bg="white", width=int(2 * RATIO))
-            row_num_entry.grid(row=0, column=2, padx=5, pady=15)
-            del_button = Button(bottom_frame, font=buttons_font, text="Delete", bg="white", width=int(5 * RATIO))
-            del_button.grid(row=0, column=3)
-
-
-            hide_button = Button(bottom_frame, bg="white", text="Hide", font=buttons_font, width=int(10 * RATIO), command=hide)
-            hide_button.grid(row=0, column=5)
+            hide_button = Button(root2, bg="white", text="Hide", font=buttons_font, width=int(10 * RATIO), command=hide)
+            hide_button.grid(row=100, column=5)
 
     root2.geometry(f'{window_width}x{window_height}+{margin_width}+{margin_height}') #Geometry of window in order : Win_X, Win_Y, PadX, PadY
     root2.resizable(False, False) #Can't resize window
