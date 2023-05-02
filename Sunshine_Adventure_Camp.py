@@ -4,6 +4,7 @@ from tkinter import messagebox
 import tkinter.font as tkFont
 root = Tk()
 dateEntry = "Date"
+row_num = 0
 
 screen_width, screen_height = root.winfo_screenwidth(), root.winfo_screenheight() #Grabs device resolution
 
@@ -21,21 +22,27 @@ def hide():
     root2.withdraw()
 
 def delete_row():
-    row_number = row_num_entry.get()
-    Label(root2, text="      ").grid(column=0, row=row_number)
-    Label(root2, text="                ").grid(column=1, row=row_number)
-    Label(root2, text="                ").grid(column=2, row=row_number)
-    Label(root2, text="                ").grid(column=3, row=row_number)
-    Label(root2, text="                ").grid(column=4, row=row_number)
-    Label(root2, text="                               ").grid(column=5, row=row_number)
-    Label(root2, text="                ").grid(column=6, row=row_number)
-    Label(root2, text="                ").grid(column=7, row=row_number)
+    global row_num
+    row_number = row_num_entry.get() # Obtains the number inside the row box
+    print(row_number)
+    if row_number == "0":
+        messagebox.showerror(title="Row Error", message="Cannot delete row 0")
+    else:
+        Label(root2, text="      ").grid(column=0, row=row_number)
+        Label(root2, text="                ").grid(column=1, row=row_number)
+        Label(root2, text="                ").grid(column=2, row=row_number)
+        Label(root2, text="                ").grid(column=3, row=row_number)
+        Label(root2, text="                ").grid(column=4, row=row_number)
+        Label(root2, text="                               ").grid(column=5, row=row_number)
+        Label(root2, text="                ").grid(column=6, row=row_number)
+        Label(root2, text="                ").grid(column=7, row=row_number)
+        row_num = row_num - 1
 
 
 def print_entries():
     global row_num
-    row_num = 0
     for entry in allEntries:
+        row_num = row_num + 1
         Label(root2, text=row_num, width=5).grid(column=0, row=row_num, sticky=W, padx=(0, 5))
         Label(root2, text=entry[0], width=12).grid(column=1, row=row_num, sticky=W)
         Label(root2, text=entry[1], width=10).grid(column=2, row=row_num, sticky=W)
@@ -44,7 +51,7 @@ def print_entries():
         Label(root2, text=entry[4], width=10).grid(column=5, row=row_num, sticky=W) 
         Label(root2, text=entry[5], width=12).grid(column=6, row=row_num, sticky=W)
         Label(root2, text=entry[6], width=10).grid(column=7, row=row_num, sticky=W)
-        row_num += 1
+        
 
 def new_window():
     try:
@@ -66,6 +73,15 @@ def new_window():
 
             hide_button = Button(root2, bg="white", text="Hide", font=buttons_font, width=int(10 * RATIO), command=hide)
             hide_button.grid(row=100, column=5)
+            # Entries Frame
+            Label(root2, text="0", width=5).grid(column=0, row=0, sticky=W, padx=(0, 5))
+            Label(root2, text="Leader's Name", width=12).grid(column=1, row=0, sticky=W)
+            Label(root2, text="Location", width=10).grid(column=2, row=0, sticky=W)
+            Label(root2, text="Member", width=10).grid(column=3, row=0, sticky=W)
+            Label(root2, text="Weather", width=10).grid(column=4, row=0, sticky=W)
+            Label(root2, text= "Date",  width=10).grid(column=5, row=0, sticky=W) 
+            Label(root2, text="Staying/Moving", width=12).grid(column=6, row=0, sticky=W)
+            Label(root2, text= "Day/Night", width=10).grid(column=7, row=0, sticky=W)
 
     except:  # exception 
             root2 = Toplevel()
@@ -79,6 +95,15 @@ def new_window():
 
             hide_button = Button(root2, bg="white", text="Hide", font=buttons_font, width=int(10 * RATIO), command=hide)
             hide_button.grid(row=100, column=5)
+            # Entries Frame
+            Label(root2, text="0", width=5).grid(column=0, row=0, sticky=W, padx=(0, 5))
+            Label(root2, text="Leader's Name", width=12).grid(column=1, row=0, sticky=W)
+            Label(root2, text="Location", width=10).grid(column=2, row=0, sticky=W)
+            Label(root2, text="Member", width=10).grid(column=3, row=0, sticky=W)
+            Label(root2, text="Weather", width=10).grid(column=4, row=0, sticky=W)
+            Label(root2, text= "Date",  width=10).grid(column=5, row=0, sticky=W) 
+            Label(root2, text="Staying/Moving", width=12).grid(column=6, row=0, sticky=W)
+            Label(root2, text= "Day/Night", width=10).grid(column=7, row=0, sticky=W)
 
     root2.geometry(f'{window_width}x{window_height}+{margin_width}+{margin_height}') #Geometry of window in order : Win_X, Win_Y, PadX, PadY
     root2.resizable(False, False) #Can't resize window
@@ -193,8 +218,10 @@ day_night.configure(width=int(14 * RATIO))
 day_night.grid(row=3, column=1,padx=(int(15 * RATIO)), pady=(int(10 * RATIO)), sticky="w")
 
 
+
 def submit():
     while True:
+        global row_num
         name = leader_name.get()
         location = location_entry.get()
         member = members.get()
@@ -202,9 +229,14 @@ def submit():
         staying_moving = staying_or_moving.get()
         day_night = day_night_time.get()
 
+        for i in name:
+            num_true = i.isnumeric()
 
         if name == "":
             messagebox.showerror(title="Name Error", message="Please Enter a Name")
+            break
+        elif num_true == True:
+            messagebox.showerror(title="Name Integer Error", message="There's an Integer in the Name")
             break
 
         if location == "":
@@ -234,7 +266,7 @@ def submit():
         
 
         global allEntries
-        allEntries = [["Leader's Name", "Location", "Member", "Weather", "Date", "Staying/Moving", "Day/Night"]]
+        allEntries = []
         newEntry = []   
         newEntry.append(name)
         newEntry.append(location)
@@ -246,7 +278,11 @@ def submit():
         allEntries.append(newEntry)
 
         print(newEntry)
-        print_entries()
+        if row_num >= 0:
+            print_entries()
+        else:
+            row_num = 0
+            print_entries()
         
         break
 
